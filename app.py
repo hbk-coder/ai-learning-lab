@@ -1,4 +1,5 @@
 import json
+from multiprocessing import Value
 from typing import Any
 
 APP_TITLE = "Karvand JSON Manager - Student Panel"
@@ -9,8 +10,9 @@ def menu_display() -> None:
     print("2. Show")
     print("3. Edit")
     print("4. Delete")
-    print("5. Report")
-    print("6. Exit")
+    print("5. Search")
+    print("6. Report")
+    print("7. Exit")
 
 def data_entry(id: int) -> dict[str, Any]:
     full_name: str = input("Please enter your full name: ").strip().title()
@@ -154,6 +156,28 @@ def delete_karvand(karvands) -> list[dict]:
     return karvands
 
 
+def search_karvand_by_id(karvands):
+    while True:
+        try:
+            target_id = int(input("Please enter the ID: "))
+            break
+        except ValueError:
+            print("Please enter a valid ID!")
+
+    found_position = None
+    for item, karvand in enumerate(karvands):
+        if karvand.get("id") == target_id:
+            found_position = item
+            break
+
+    if found_position == None:
+        print(f"ID {target_id} is not available!")
+        return
+
+    print(f"Name: {karvands[found_position]["full_name"]}")
+    print(f"Email: {karvands[found_position]["email"]}")
+
+
 def main():
     bootcamp: dict[str] = dict(title = "karvand Python", year = 2026)
     karvands: list[dict] = []
@@ -171,6 +195,8 @@ def main():
                 karvands = edit_karvand(karvands)
             case "delete":
                 karvands = delete_karvand(karvands)
+            case "search":
+                search_karvand_by_id(karvands)
             case "report":
                 report = dict(bootcamp = bootcamp, karvands = karvands)
                 print(json.dumps(report, indent=4, ensure_ascii= False))
