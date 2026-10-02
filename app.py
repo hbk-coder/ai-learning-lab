@@ -1,7 +1,7 @@
 import json
 from typing import Any
 
-APP_TITLE = "Karvand JSON Manager"
+APP_TITLE = "Karvand JSON Manager - Student Panel"
 
 def menu_display() -> None:
     print("Program Menu")
